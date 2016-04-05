@@ -24,8 +24,10 @@ using namespace std;
 #include "Poco/DateTimeFormatter.h"
 
 
-#include "EventsConfiguration.h"
-#include "AppLogger.h"
+
+#include "Poco/Runnable.h"
+#include "Poco/Thread.h"
+using Poco::Runnable;
 
 
 //#include "Poco/Crypto/Cipher.h"
@@ -39,6 +41,15 @@ using namespace std;
 extern "C"
 {
 
+class Worker:public Poco::Runnable{
+public:
+	Worker(int n):_id(n){}
+	virtual void run() {
+		printf("i'm worker: %d", _id);
+	}
+private:
+	int _id;
+};
 
 JNIEXPORT jstring Java_com_demo_pocodemo_MainActivity_SamplePOCO(JNIEnv* env, jobject thiz) {
 
@@ -47,10 +58,26 @@ JNIEXPORT jstring Java_com_demo_pocodemo_MainActivity_SamplePOCO(JNIEnv* env, jo
 	//	strStream << " was at " << Poco::DateTimeFormatter::format(Poco::Timestamp, "%d/%n/%y");
 	strStream << " and days has passed since than!";
 
-//	CAppLogger::Instance().Log(strStream, Poco::Message::PRIO_NOTICE);
+	//	CAppLogger::Instance().Log(strStream, Poco::Message::PRIO_NOTICE);
 
 	const char* str = strStream.str().c_str();
 	return env->NewStringUTF(str);
+}
+
+JNIEXPORT jstring Java_com_demo_pocodemo_MainActivity_WorkerThreadDemo(JNIEnv* env, jobject thiz) {
+
+	Worker work1(100);
+	Worker work2(200);
+
+	Poco::Thread thread1;
+	Poco::Thread thread2;
+
+	thread1.start(work1);
+	thread2.start(work2);
+
+	thread1.join();
+	thread2.join();
+
 }
 
 JNIEXPORT void Java_com_demo_pocodemo_MainActivity_JSONDemo(JNIEnv* env, jobject thiz) {

@@ -15,8 +15,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := pocoShared
-LOCAL_SRC_FILES :=  pocoMain.cpp	\
-					AppLogger.cpp
+LOCAL_SRC_FILES :=  pocoMain.cpp	
 #LOCAL_SRC_FILES := pocoDemoJSON.cpp
 #LOCAL_SRC_FILES := pocoDemoCrypto.cpp
 #LOCAL_SRC_FILES := pocoDemoWorker.cpp
