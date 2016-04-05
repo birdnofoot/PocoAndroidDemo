@@ -27,6 +27,8 @@ public class MainActivity extends Activity {
 	
 	private native void JSONDemo();
 	
+	private native void WorkerThreadDemo();
+	
 	private final String sdCardPath = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
 
@@ -62,6 +64,13 @@ public class MainActivity extends Activity {
 	{
 		JSONDemo();
 	}
+	
+	public void WorkerThreadDemo(View view)
+	{
+		WorkerThreadDemo();
+	}
+	
+	
 
 
 	@Override
