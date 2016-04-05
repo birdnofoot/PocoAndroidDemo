@@ -30,7 +30,8 @@ LOCAL_SRC_FILES :=  pocoMain.cpp
 # Header Includes
 #
 LOCAL_C_INCLUDES := \
-            $(LOCAL_PATH)/../include
+            $(LOCAL_PATH)/../include 	\
+	     /Users/saba/usr/local/Cellar/openssl/1.0.2d_1/include
 #
 # Compile Flags and Link Libraries
 #
