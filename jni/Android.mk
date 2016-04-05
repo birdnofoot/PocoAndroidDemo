@@ -1,6 +1,11 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE    := PocoNet
+LOCAL_SRC_FILES := ../prebuilt/$(TARGET_ARCH_ABI)/libPocoNet.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE    := PocoJSON
 LOCAL_SRC_FILES := ../prebuilt/$(TARGET_ARCH_ABI)/libPocoJSON.so
 include $(PREBUILT_SHARED_LIBRARY)
@@ -32,6 +37,6 @@ LOCAL_C_INCLUDES := \
 LOCAL_CFLAGS := -DANDROID_NDK -fexceptions -fpermissive -frtti 
 
 LOCAL_LDLIBS := -llog
-LOCAL_STATIC_LIBRARIES:= PocoJSON PocoFoundation
+LOCAL_SHARED_LIBRARIES:= PocoNet PocoJSON PocoFoundation
 
 include $(BUILD_SHARED_LIBRARY)

@@ -59,6 +59,14 @@
         android:onClick="WorkerThreadDemo"
         android:text="WorkerThreadDemo" />
     
-    
+     <Button
+        android:id="@+id/Button015"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Button014"
+        android:onClick="NetDictDemo"
+        android:text="NetDictDemo" />
 
 </RelativeLayout>

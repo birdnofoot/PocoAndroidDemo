@@ -22,7 +22,7 @@ using namespace std;
 #include "Poco/DateTime.h"
 #include "Poco/DateTimeFormat.h"
 #include "Poco/DateTimeFormatter.h"
-
+#include "Poco/Uri.h"
 
 
 #include "Poco/Runnable.h"
@@ -37,19 +37,33 @@ using Poco::Runnable;
 //using Poco::Crypto::CipherFactory;
 //using Poco::Crypto::RSAKey;
 
+
+
+
+#include "Poco/Net/StreamSocket.h"
+#include "Poco/Net/SocketStream.h"
+#include "Poco/Net/SocketAddress.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/Path.h"
+#include "Poco/Exception.h"
+#include "Poco/Net/Context.h"
+#include "Poco/Net/HTTPSClientSession.h"
+#include "Poco/Net/HTTPRequest.h"
+#include "Poco/Net/SSLException.h"
+#include "Poco/Net/HTTPCookie.h"
+
+using Poco::Net::StreamSocket;
+using Poco::Net::SocketStream;
+using Poco::Net::SocketAddress;
+using Poco::StreamCopier;
+using Poco::Path;
+using Poco::Exception;
+
 #ifdef __cplusplus
 extern "C"
 {
 
-class Worker:public Poco::Runnable{
-public:
-	Worker(int n):_id(n){}
-	virtual void run() {
-		printf("i'm worker: %d", _id);
-	}
-private:
-	int _id;
-};
+
 
 JNIEXPORT jstring Java_com_demo_pocodemo_MainActivity_SamplePOCO(JNIEnv* env, jobject thiz) {
 
@@ -63,6 +77,51 @@ JNIEXPORT jstring Java_com_demo_pocodemo_MainActivity_SamplePOCO(JNIEnv* env, jo
 	const char* str = strStream.str().c_str();
 	return env->NewStringUTF(str);
 }
+
+JNIEXPORT void Java_com_demo_pocodemo_MainActivity_NetDictDemo(JNIEnv* env, jobject thiz) {
+
+	try
+	{
+		const Poco::URI uri( "https://localhost.com" );
+		const Poco::Net::Context::Ptr context( new Poco::Net::Context( Poco::Net::Context::CLIENT_USE, "", "", "rootcert.pem" ) );
+		Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context );
+		Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_POST, "/login.php" );
+		req.setContentType("Content-Type: application/x-www-form-urlencoded\r\n");
+		req.setKeepAlive(true);
+
+		std::string reqBody("username=???&password=???&action_login=Log+In\r\n\r\n");
+		req.setContentLength( reqBody.length() );
+
+		//Poco::Net::HTTPBasicCredentials cred("???", "???");
+		//cred.authenticate(req);
+		session.sendRequest(req) << reqBody;
+		Poco::Net::HTTPResponse res;
+		std::istream& rs = session.receiveResponse(res);
+		std::string resp;
+
+		std::vector<Poco::Net::HTTPCookie> cookies;
+		res.getCookies( cookies );
+	}
+	catch( const Poco::Net::SSLException& e )
+	{
+		std::cerr << e.what() << ": " << e.message() << std::endl;
+	}
+	catch( const std::exception& e )
+	{
+		std::cerr << e.what() << std::endl;;
+	}
+
+}
+
+class Worker:public Poco::Runnable{
+public:
+	Worker(int n):_id(n){}
+	virtual void run() {
+		printf("i'm worker: %d", _id);
+	}
+private:
+	int _id;
+};
 
 JNIEXPORT jstring Java_com_demo_pocodemo_MainActivity_WorkerThreadDemo(JNIEnv* env, jobject thiz) {
 

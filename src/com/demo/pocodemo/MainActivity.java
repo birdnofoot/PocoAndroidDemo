@@ -29,6 +29,8 @@ public class MainActivity extends Activity {
 	
 	private native void WorkerThreadDemo();
 	
+	private native void NetDictDemo(); 
+	
 	private final String sdCardPath = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
 
@@ -70,7 +72,10 @@ public class MainActivity extends Activity {
 		WorkerThreadDemo();
 	}
 	
-	
+	public void NetDictDemo(View view)
+	{
+		NetDictDemo();
+	}
 
 
 	@Override
