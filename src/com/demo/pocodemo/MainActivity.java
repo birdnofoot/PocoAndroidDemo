@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
 	
 	public void NetDictDemo(View view)
 	{
-		NetDictDemo();
+//		NetDictDemo();
 	}
 
 
